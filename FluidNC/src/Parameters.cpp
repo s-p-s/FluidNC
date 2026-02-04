@@ -483,8 +483,20 @@ bool get_param_ref(const char* line, size_t& pos, param_ref_t& param_ref) {
 }
 
 bool set_named_param(const std::string& name, float value) {
-    global_named_params[name] = value;
+    std::string canon;
+    canon.reserve(name.size());
+    for (auto c : name) {
+        canon += toupper(static_cast<unsigned char>(c));
+    }
+    global_named_params[canon] = value;
     return true;
+}
+
+bool set_named_param(const char* name, float value) {
+    if (!name) {
+        return false;
+    }
+    return set_named_param(std::string(name), value);
 }
 
 bool set_numbered_param(ngc_param_id_t id, float value) {

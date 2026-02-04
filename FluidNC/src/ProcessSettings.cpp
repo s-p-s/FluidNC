@@ -38,6 +38,8 @@
 static Error switchInchMM(const char* value, AuthenticationLevel auth_level, Channel& out);
 static Error report_init_message_cmd(const char* value, AuthenticationLevel auth_level, Channel& out);
 
+Error tcs3472_command(const char* value, AuthenticationLevel auth_level, Channel& out);
+
 #ifdef ENABLE_AUTHENTICATION
 // If authentication is disabled, auth_level will be LEVEL_ADMIN
 static bool auth_failed(Word* w, std::string_view value, AuthenticationLevel auth_level) {
@@ -987,6 +989,8 @@ void make_user_commands() {
     new UserCommand("MI", "Motors/Init", motors_init, notIdleOrAlarm);
 
     new UserCommand("RM", "Macros/Run", macros_run, nullptr);
+
+    new UserCommand("TCS", "Sensor/TCS3472", tcs3472_command, anyState);
 
     new UserCommand("H", "Home", home_all, allowConfigStates);
     new UserCommand("HX", "Home/X", home_x, allowConfigStates);
